@@ -1,0 +1,26 @@
+!!!5
+%html
+  %head
+    %title Canvas Experiment
+    
+  %body
+    %h1 Canvas Experiment
+    %section{ :id => "canvas-experiment" }
+      %h2 Image
+      %canvas#canvas
+    
+    %section{ :id => "results" }
+      %h2 Color Breakdown
+      .color-breakdown
+        #visualization.chart-wrapper
+        
+    
+    %script{ :src => "//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js", :type => "text/javascript" }
+    %script{ :src => "js/index.js" }
+    %script{ :src => "http://www.google.com/jsapi" }
+    :javascript
+      google.load('visualization', '1', {packages: ['corechart']});
+      google.setOnLoadCallback(function() {
+        console.log("Google loaded");
+        constructImage();
+      });

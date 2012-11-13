@@ -1,0 +1,11 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/gojira\/Development\/web\/canvas\/src\/scss\/styles\.scss}line{font-family:\000031}}
+body {
+  margin: 0px;
+  padding: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/gojira\/Development\/web\/canvas\/src\/scss\/styles\.scss}line{font-family:\000035}}
+body #myCanvas {
+  border: 1px solid #9C9898;
+  width: 300px;
+  height: 255px;
+}

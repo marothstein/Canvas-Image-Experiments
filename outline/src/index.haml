@@ -1,0 +1,19 @@
+!!!5
+%html
+  %head
+    %title Canvas Experiment
+    
+  %body
+    %h1 Canvas Experiment
+    %section{ :id => "source-material" }
+      %h2 Source Material
+      %img{ :id => "source-img" }
+    %section{ :id => "canvas-experiments" }
+      %h2 Image Border Paint
+      %canvas#canvas-border
+      %h2 Image Pixelize
+      %canvas#canvas-pixelize
+      
+
+    %script{ :src => "//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js", :type => "text/javascript" }
+    %script{ :src => "js/index.js" }

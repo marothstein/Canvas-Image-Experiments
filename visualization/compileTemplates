@@ -1,0 +1,25 @@
+#!/bin/bash
+
+errorCount=0
+  
+FILES="
+src/*.haml"
+for inFile in $FILES
+do
+  echo "Processing $inFile..."
+  outFile=${inFile//src/dist}
+  outFile=${outFile//haml/html}
+  echo "--- Dist Path: $outFile";
+  # Perform Compilation
+  haml $inFile $outFile
+  
+  if [ $? -eq 0 ]; then
+    echo "--- Compilation successful.\n";
+  else
+    echo "--- Compilation failed. Error Code: $?\n";
+    let "errorCount = $errorCount+1";
+  fi
+
+done
+
+echo "Execution finished. $errorCount errors.\n";

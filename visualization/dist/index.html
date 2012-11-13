@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas Experiment</title>
+  </head>
+  <body>
+    <h1>Canvas Experiment</h1>
+    <section id='canvas-experiment'>
+      <h2>Image</h2>
+      <canvas id='canvas'></canvas>
+    </section>
+    <section id='results'>
+      <h2>Color Breakdown</h2>
+      <div class='color-breakdown'>
+        <div class='chart-wrapper' id='visualization'></div>
+      </div>
+    </section>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js' type='text/javascript'></script>
+    <script src='js/index.js'></script>
+    <script src='http://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        google.load('visualization', '1', {packages: ['corechart']});
+        google.setOnLoadCallback(function() {
+          console.log("Google loaded");
+          constructImage();
+        });
+      //]]>
+    </script>
+  </body>
+</html>
