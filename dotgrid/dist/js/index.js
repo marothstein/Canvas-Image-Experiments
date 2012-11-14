@@ -1,4 +1,4 @@
-var blueify, constructImage, drawImage, getBluePixels;
+var constructImage, drawImage, expand;
 
 drawImage = function(imageObj, canvas) {
   var context;
@@ -8,33 +8,38 @@ drawImage = function(imageObj, canvas) {
   return context.drawImage(imageObj, 0, 0);
 };
 
-getBluePixels = function(imageData) {
-  var bluePixels, i, pixelData, pushBluePixel, _i, _ref;
-  bluePixels = [];
-  pixelData = imageData.data;
-  pushBluePixel = function(i) {
-    var blueVal;
-    console.log("pixelData.length = " + pixelData.length);
-    blueVal = pixelData[i + 2];
-    console.log("Blue pixel value = " + blueVal);
-    return bluePixels.push(pixelData[i], pixelData[i + 1], pixelData[i + 2], pixelData[i + 3]);
+expand = function(src, dest, factor) {
+  var context, data, getNewIndex, gridData, gridImageData, height, imageData, index, newIndex, srcCtx, srcHeight, srcWidth, width, x, y, _i, _j;
+  srcCtx = src.getContext("2d");
+  imageData = srcCtx.getImageData(0, 0, src.width, src.height);
+  srcWidth = src.width;
+  srcHeight = src.height;
+  data = imageData.data;
+  width = dest.width = srcWidth * factor;
+  height = dest.height = srcHeight * factor;
+  context = dest.getContext("2d");
+  gridImageData = context.createImageData(width, height);
+  gridData = gridImageData.data;
+  getNewIndex = function(index, x, y) {
+    if (y === 0 && x === 0) {
+      return index;
+    } else {
+      x = x * factor;
+      y = y * factor;
+      return (y * width + x) * 4;
+    }
   };
-  for (i = _i = 0, _ref = imageData.data.length; _i <= _ref; i = _i += 4) {
-    pushBluePixel(i);
+  for (y = _i = 0; 0 <= srcHeight ? _i <= srcHeight : _i >= srcHeight; y = 0 <= srcHeight ? ++_i : --_i) {
+    for (x = _j = 0; 0 <= srcWidth ? _j <= srcWidth : _j >= srcWidth; x = 0 <= srcWidth ? ++_j : --_j) {
+      index = (y * srcWidth + x) * 4;
+      newIndex = getNewIndex(index, x, y);
+      gridData[newIndex] = data[index];
+      gridData[newIndex + 1] = data[index + 1];
+      gridData[newIndex + 2] = data[index + 2] = 255;
+      gridData[newIndex + 3] = data[index + 3];
+    }
   }
-  return bluePixels;
-};
-
-blueify = function(canvas) {
-  var blueImageData, bluePixels, context, height, imageData, width;
-  context = canvas.getContext("2d");
-  imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  width = canvas.width;
-  height = canvas.height;
-  bluePixels = getBluePixels(imageData);
-  blueImageData = context.createImageData(width, height);
-  blueImageData.data = bluePixels;
-  return context.putImageData(blueImageData, 0, 0);
+  return context.putImageData(gridImageData, 0, 0);
 };
 
 constructImage = function() {
@@ -42,9 +47,8 @@ constructImage = function() {
   console.log("Construct Image called");
   imageObj = new Image();
   imageObj.onload = function() {
-    var colorData;
-    colorData = drawImage(this, document.getElementById('canvas-blueify'));
-    return blueify(document.getElementById('canvas-blueify'));
+    drawImage(imageObj, document.getElementById('canvas-original'));
+    return expand(document.getElementById('canvas-original'), document.getElementById('canvas-exp'), 3);
   };
   imageObj.src = "/images/flower.jpg";
   return $('#source-img').attr('src', imageObj.src);
